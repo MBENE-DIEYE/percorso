@@ -6,7 +6,6 @@ const router = Router()
 
 router.use(requireAuth)
 
-// Elenca tutti i percorsi dell'utente loggato
 router.get("/", async (req, res) => {
   try {
     const result = await pool.query(
@@ -20,7 +19,6 @@ router.get("/", async (req, res) => {
   }
 })
 
-// Crea un nuovo percorso
 router.post("/", async (req, res) => {
   const { nome } = req.body
   if (!nome || !nome.trim()) {
@@ -39,7 +37,6 @@ router.post("/", async (req, res) => {
   }
 })
 
-// Elimina un percorso (e le sue note, grazie a ON DELETE CASCADE)
 router.delete("/:id", async (req, res) => {
   try {
     const result = await pool.query(

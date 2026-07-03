@@ -4,7 +4,6 @@ import LoginPage from "./pages/LoginPage.jsx"
 import PercorsiPage from "./pages/PercorsiPage.jsx"
 import PercorsoDetailPage from "./pages/PercorsoDetailPage.jsx"
 
-// Protegge le rotte private: se non sei loggata, ti rimanda al login
 const RichiedeAuth = ({ children }) => {
   const { user, loading } = useAuth()
   if (loading) return <div className="min-h-screen flex items-center justify-center text-ink-soft">Caricamento…</div>

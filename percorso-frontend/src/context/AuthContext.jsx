@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Al primo caricamento, recupera il login salvato in precedenza (se c'è)
   useEffect(() => {
     const savedToken = localStorage.getItem("percorso_token")
     const savedUser = localStorage.getItem("percorso_user")

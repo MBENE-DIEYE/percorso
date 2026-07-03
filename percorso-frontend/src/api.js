@@ -1,7 +1,5 @@
 const BASE_URL = "http://localhost:4000/api"
 
-// Wrapper attorno a fetch che aggiunge automaticamente il token (se presente)
-// e gestisce gli errori in modo uniforme, così ogni pagina non deve ripetere la stessa logica.
 const request = async (path, { method = "GET", body, token } = {}) => {
   const headers = { "Content-Type": "application/json" }
   if (token) headers.Authorization = `Bearer ${token}`
@@ -12,7 +10,6 @@ const request = async (path, { method = "GET", body, token } = {}) => {
     body: body ? JSON.stringify(body) : undefined,
   })
 
-  // Le risposte 204 (No Content, es. delete) non hanno corpo JSON da leggere
   if (res.status === 204) return null
 
   const data = await res.json().catch(() => null)

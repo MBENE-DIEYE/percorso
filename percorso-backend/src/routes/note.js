@@ -6,7 +6,6 @@ const router = Router()
 
 router.use(requireAuth)
 
-// Verifica che il percorso appartenga all'utente loggato, altrimenti nessuno può leggere/scrivere note altrui
 const checkPercorsoOwnership = async (percorsoId, userId) => {
   const result = await pool.query(
     "SELECT id FROM percorsi WHERE id = $1 AND user_id = $2",
@@ -15,8 +14,6 @@ const checkPercorsoOwnership = async (percorsoId, userId) => {
   return result.rows.length > 0
 }
 
-// Elenca le note di un percorso, dalla più recente.
-// Supporta il filtro opzionale per intervallo di date: ?from=YYYY-MM-DD&to=YYYY-MM-DD
 router.get("/:percorsoId/note", async (req, res) => {
   const { percorsoId } = req.params
   const { from, to } = req.query
@@ -50,9 +47,6 @@ router.get("/:percorsoId/note", async (req, res) => {
   }
 })
 
-// Restituisce i raggruppamenti automatici delle note in settimane (lun-ven) e mesi,
-// calcolati dalle date effettive delle note già inserite. Utile per mostrare
-// nel frontend una lista tipo "Settimana 1 (16-20 giu)", "Giugno 2026", ecc.
 router.get("/:percorsoId/periodi", async (req, res) => {
   const { percorsoId } = req.params
 
@@ -67,10 +61,9 @@ router.get("/:percorsoId/periodi", async (req, res) => {
 
     const date = result.rows.map(r => new Date(r.data))
 
-    // --- Raggruppamento per settimana (lunedì-venerdì) ---
     const settimaneMap = new Map()
     for (const d of date) {
-      const giorno = d.getUTCDay() // 0=dom, 1=lun, ... 6=sab
+      const giorno = d.getUTCDay()
       const offsetDaLunedi = giorno === 0 ? 6 : giorno - 1
       const lunedi = new Date(d)
       lunedi.setUTCDate(d.getUTCDate() - offsetDaLunedi)
@@ -87,11 +80,10 @@ router.get("/:percorsoId/periodi", async (req, res) => {
       }
     }
 
-    // --- Raggruppamento per mese ---
     const mesiMap = new Map()
     for (const d of date) {
       const anno = d.getUTCFullYear()
-      const mese = d.getUTCMonth() // 0-11
+      const mese = d.getUTCMonth()
       const chiave = `${anno}-${String(mese + 1).padStart(2, "0")}`
 
       if (!mesiMap.has(chiave)) {
@@ -115,7 +107,6 @@ router.get("/:percorsoId/periodi", async (req, res) => {
   }
 })
 
-// Aggiunge una nota al percorso
 router.post("/:percorsoId/note", async (req, res) => {
   const { percorsoId } = req.params
   const { contenuto, data } = req.body
@@ -141,7 +132,6 @@ router.post("/:percorsoId/note", async (req, res) => {
   }
 })
 
-// Elimina una nota
 router.delete("/:percorsoId/note/:noteId", async (req, res) => {
   const { percorsoId, noteId } = req.params
 
@@ -163,9 +153,6 @@ router.delete("/:percorsoId/note/:noteId", async (req, res) => {
   }
 })
 
-// Genera un riassunto leggibile delle note del percorso usando l'API di Claude.
-// Body opzionale: { from, to } per limitare il riassunto a una settimana o un mese specifico.
-// Se from/to non vengono passati, il riassunto copre tutte le note del percorso.
 router.post("/:percorsoId/riassunto", async (req, res) => {
   const { percorsoId } = req.params
   const { from, to } = req.body || {}

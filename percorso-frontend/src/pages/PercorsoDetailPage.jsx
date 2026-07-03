@@ -19,7 +19,7 @@ const PercorsoDetailPage = () => {
   const [nuovaNota, setNuovaNota] = useState("")
   const [errore, setErrore] = useState("")
 
-  const [periodoSelezionato, setPeriodoSelezionato] = useState(null) // { from, to } | null = tutto
+  const [periodoSelezionato, setPeriodoSelezionato] = useState(null)
 
   const caricaNote = async (periodo = periodoSelezionato) => {
     setCaricando(true)
@@ -84,7 +84,6 @@ const PercorsoDetailPage = () => {
       </header>
 
       <main className="max-w-2xl mx-auto px-6 py-10">
-        {/* Aggiungi nota */}
         <form onSubmit={handleAggiungiNota} className="flex gap-2 mb-6">
           <input
             type="text"
@@ -101,7 +100,6 @@ const PercorsoDetailPage = () => {
           </button>
         </form>
 
-        {/* Filtri periodo */}
         {(periodi.settimane.length > 0 || periodi.mesi.length > 0) && (
           <div className="mb-8 flex flex-col gap-2">
             <div className="flex flex-wrap gap-2 items-center">
@@ -145,7 +143,6 @@ const PercorsoDetailPage = () => {
 
         {errore && <p className="text-sm text-red-600 mb-4">{errore}</p>}
 
-        {/* Elenco note, stile "filo" verticale */}
         {caricando ? (
           <p className="text-ink-soft text-sm">Caricamento…</p>
         ) : note.length === 0 ? (

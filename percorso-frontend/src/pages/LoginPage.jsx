@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext.jsx"
 const LoginPage = () => {
   const { login, register } = useAuth()
   const navigate = useNavigate()
-  const [modalita, setModalita] = useState("login") // "login" | "registrati"
+  const [modalita, setModalita] = useState("login")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [mostraPassword, setMostraPassword] = useState(false)
