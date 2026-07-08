@@ -30,3 +30,6 @@ Diario di internship con riassunto AI — versione Next.js (App Router) di Perco
 ## Nota
 
 La rotta `/api/percorsi/[id]/riassunto` esisteva già nel backend originale ma non risultava collegata a nessun pulsante nel frontend — è stata migrata così com'è (nessuna nuova funzionalità aggiunta), solo aggiornata per usare l'SDK ufficiale `@anthropic-ai/sdk` e il modello `claude-sonnet-5`.
+
+
+https://percorso-woad.vercel.app/
