@@ -70,7 +70,7 @@ const PercorsiPage = () => {
           <form onSubmit={handleCrea} className="flex gap-2 mb-8">
             <input
               type="text"
-              placeholder="Nome nuovo percorso (es. Stage Mia Academy)"
+              placeholder="Nome nuovo percorso"
               value={nuovoNome}
               onChange={e => setNuovoNome(e.target.value)}
               className="flex-1 px-4 py-2.5 rounded-xl border border-ink/15 bg-white focus:outline-none focus:ring-2 focus:ring-thread-light"
