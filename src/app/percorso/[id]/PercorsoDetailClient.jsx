@@ -22,6 +22,16 @@ const PercorsoDetailClient = ({ id }) => {
   const [errore, setErrore] = useState("")
 
   const [periodoSelezionato, setPeriodoSelezionato] = useState(null)
+  const [copiato, setCopiato] = useState(false)
+
+  const copiaNote = () => {
+    const testo = note
+      .map(n => formattaData(n.data) + "\n" + n.contenuto)
+      .join("\n\n")
+    navigator.clipboard.writeText(testo)
+    setCopiato(true)
+    setTimeout(() => setCopiato(false), 2000)
+  }
 
   const caricaNote = async (periodo = periodoSelezionato) => {
     setCaricando(true)
@@ -109,9 +119,8 @@ const PercorsoDetailClient = ({ id }) => {
               <div className="flex flex-wrap gap-2 items-center">
                 <button
                   onClick={() => selezionaPeriodo(null)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    !periodoSelezionato ? "bg-thread text-white" : "bg-white border border-ink/15 text-ink-soft hover:border-thread-light"
-                  }`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${!periodoSelezionato ? "bg-thread text-white" : "bg-white border border-ink/15 text-ink-soft hover:border-thread-light"
+                    }`}
                 >
                   Tutto
                 </button>
@@ -119,9 +128,8 @@ const PercorsoDetailClient = ({ id }) => {
                   <button
                     key={m.from}
                     onClick={() => selezionaPeriodo(m)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                      periodoSelezionato?.from === m.from ? "bg-thread text-white" : "bg-white border border-ink/15 text-ink-soft hover:border-thread-light"
-                    }`}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${periodoSelezionato?.from === m.from ? "bg-thread text-white" : "bg-white border border-ink/15 text-ink-soft hover:border-thread-light"
+                      }`}
                   >
                     {new Date(m.from).toLocaleDateString("it-IT", { month: "long", year: "numeric" })}
                   </button>
@@ -133,9 +141,8 @@ const PercorsoDetailClient = ({ id }) => {
                     <button
                       key={s.from}
                       onClick={() => selezionaPeriodo(s)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                        periodoSelezionato?.from === s.from ? "bg-gold text-white" : "bg-white border border-ink/15 text-ink-soft hover:border-gold"
-                      }`}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${periodoSelezionato?.from === s.from ? "bg-gold text-white" : "bg-white border border-ink/15 text-ink-soft hover:border-gold"
+                        }`}
                     >
                       Sett. {formattaPeriodo(s.from, s.to)}
                     </button>
@@ -143,6 +150,14 @@ const PercorsoDetailClient = ({ id }) => {
                 </div>
               )}
             </div>
+          )}
+          {note.length > 0 && !caricando && (
+            <button
+              onClick={copiaNote}
+              className="mb-4 px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-ink/15 text-ink-soft hover:border-thread-light transition-colors"
+            >
+              {copiato ? "Copiato!" : "Copia"}
+            </button>
           )}
 
           {errore && <p className="text-sm text-red-600 mb-4">{errore}</p>}
